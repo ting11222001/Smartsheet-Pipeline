@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Smartsheet webhook pipeline
+
+Resources:
+  SmartsheetFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: smartsheet-processor
+      CodeUri: .
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.12
+      Timeout: 10
+      Events:
+        WebhookPost:
+          Type: Api
+          Properties:
+            Path: /webhook
+            Method: post
