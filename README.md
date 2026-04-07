@@ -2,15 +2,21 @@
 
 A Python AWS pipeline that receives a Smartsheet-style webhook, processes the row data, and stores it in DynamoDB. When a row status is "Complete", it exports a CSV summary to S3.
 
-[Demo Video](#demo) · [Architecture](#architecture)
+[Demo Video](https://www.youtube.com/watch?v=oYZsltt8m-Y) · [Architecture](#architecture)
 
 
 ## Demo
 
-`POST /webhook`, row written to DynamoDB:
+`POST /webhook` requests to the API Gateway endpoint:
+![Postman requests](demo/postman-requests.png)
+
+New data rows are written to DynamoDB:
 ![DynamoDB entry](demo/dynamodb-entry.png)
 
-S3 bucket after a "Complete" row is received:
+When status is "Complete", a CSV is exported to the `summaries/` folder in S3:
+![S3 Bucket](demo/s3-bucket.png)
+
+The CSV contains the expected row data:
 ![S3 CSV export](demo/s3-csv-export.png)
 
 
