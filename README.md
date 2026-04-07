@@ -70,7 +70,6 @@ DynamoDB  S3
 - Lambda validates and processes fake Smartsheet row data
 - DynamoDB table defined in SAM template, written to via boto3
 - S3 export triggered when `status == "Complete"`
-- Structured logging to CloudWatch
 
 
 ## In Progress
@@ -78,3 +77,4 @@ DynamoDB  S3
 - Real Smartsheet webhook signature verification
 - Unit tests
 - CI/CD with GitHub Actions
+- Structured logging to CloudWatch
