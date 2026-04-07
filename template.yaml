@@ -11,9 +11,35 @@ Resources:
       Handler: lambda_function.lambda_handler
       Runtime: python3.12
       Timeout: 10
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: !Ref RowsTable
+          S3_BUCKET: !Ref SummaryBucket
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref RowsTable
+        - S3CrudPolicy:
+            BucketName: !Ref SummaryBucket
       Events:
         WebhookPost:
           Type: Api
           Properties:
             Path: /webhook
             Method: post
+
+  RowsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: smartsheet-rows
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: row_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: row_id
+          KeyType: HASH
+
+  SummaryBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub smartsheet-summaries-${AWS::AccountId}
