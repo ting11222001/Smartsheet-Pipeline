@@ -4,6 +4,14 @@ A Python AWS pipeline that receives a Smartsheet-style webhook, processes the ro
 
 [Watch the Demo Video](https://www.youtube.com/watch?v=oYZsltt8m-Y) · [Architecture](#architecture)
 
+## Demo
+
+The video shows the webhook being triggered and the row written to DynamoDB. When the row status is "Complete", Lambda also exports a CSV to S3. 
+
+The screenshot below shows the exported file:
+
+![Exported CSV](demo/exported-csv.png)
+
 
 ## Table of Contents
 
