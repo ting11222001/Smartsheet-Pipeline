@@ -1,46 +1,69 @@
 # What I need to install
 ## Install Python 3.12 
 Go to: python.org/downloads
+
 My plan uses Python 3.12 because that is what AWS Lambda supports.
+
 Click the Windows link, then scroll down the page until I see Python 3.12.x and download that one.
+
 Scroll to the bottom and pick Windows installer (64-bit).
+
 Run the installer.
+
 Important: On the first screen, check the box that says "Add python.exe to PATH" before clicking Install.
+
 On Windows, check if installed successfully:
 ```
 python --version	
 ```
+
 ## Install AWS CLI - this lets you talk to AWS from your terminal
 Go to: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+
 Close and reopen the command prompt window, check if installed successfully:
 ```
 aws --version
 ```
+
 ## Install AWS SAM CLI - this is the tool for building and testing Lambda locally
 For my AWS account other than root, I need an IAM user for setting up SAM CLI.
+
 Step 1: Go to IAM
+```
 In the search bar at the top, type IAM and click it.
+```
+
 Step 2: Create a user
+```
 In the left menu, click Users.
 Click Create user.
 Enter a username, for example: sam-deploy.
 Click Next.
+```
+
 Step 3: Set permissions
+```
 Select Attach policies directly.
 Search for AdministratorAccess.
 Check the box next to it.
 Click Next, then Create user.
+```
+
 Step 4: Create an access key
+```
 Click on the user I just created.
 Go to the Security credentials tab.
 Scroll down to Access keys, click Create access key.
 Select Command Line Interface (CLI).
 Check the confirmation box, click Next, then Create access key.
 Important: Download the CSV file or copy both keys now. The secret key cannot be seen again after this page.
+```
+
 Once I have the Access Key ID and Secret Access Key, run this in the terminal:
 ```
 aws configure
 ```
+
 It will ask 4 things, enter them one by one:
 ```
 AWS Access Key ID: <paste your access key ID>
@@ -48,10 +71,12 @@ AWS Secret Access Key: <paste your secret key>
 Default region name: ap-southeast-2
 Default output format: json
 ```
+
 Then verify it works:
 ```
 aws sts get-caller-identity
 ```
+
 I should see my account ID and sam-deploy as the user:
 ```
 {
@@ -60,53 +85,69 @@ I should see my account ID and sam-deploy as the user:
     "Arn": "YOUR_ARN"
 }
 ```
+
 Next, install SAM CLI. Go to this page and download the Windows installer:
 docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html
+
 Click through it with default options.
+
 After it finishes, verify it works:
 ```
 sam --version
 ```
+
 ## Install Docker - SAM needs this to run Lambda locally
+
 Check if installed:
 ```
 docker --version
 ```
+
 # Project setup
+
 ## Set the local folder to the remote repo
 Create a .gitignore file:
 ```
 echo ".aws-sam/ __pycache__/ *.pyc samconfig.toml" > .gitignore
 ```
+
 Then verify it looks correct:
 ```
 type .gitignore
 ```
+
 Output:
 ```
 ".aws-sam/ __pycache__/ *.pyc samconfig.toml"
 ```
+
 Now create the two project files. First, create template.yaml:
 ```
 echo. > template.yaml
 echo. > lambda_function.py
 ```
+
 Then open the folder in VS Code:
 ```
 code .
 ```
+
 Create lambda_function.py, template.yaml, test_event.json.
+
 Docker Desktop just needs to be running in the background. Open Docker Desktop and wait until it shows "Engine running" at the bottom left.
+
 Then, in cmd, cd into the project folder and run:
 ```
 sam local invoke SmartsheetFunction --event test_event.json
 ```
+
 After a while I can see this:
 ```
 {"statusCode": 200, "body": "{\"message\": \"Row processed successfully\", \"row_id\": \"101\", \"status\": \"In Progress\", \"project_name\": \"Bridge Construction\"}"}
 ```
 
 ## SAM Local vs SAM Deploy
+
 One-liner: `sam local` runs everything in Docker on my machine with no AWS connection, and costs only start when I run `sam deploy`.
 
 Key points:
