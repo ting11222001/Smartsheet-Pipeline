@@ -270,7 +270,7 @@ sam local invoke SmartsheetFunction --event test_event.json --env-vars env.json
 ```
 
 Create `env.json` in the project folder:
-``
+```
 json{
   "SmartsheetFunction": {
     "DYNAMODB_TABLE": "<name of the table>",
@@ -293,3 +293,15 @@ The common pattern is:
 ci.yml for build and test, runs on every push to any branch
 cd.yml for deploy, runs only on push to main
 ```
+
+Currently the CI workflow just runs `sam build`, which only compiles the code. It does not invoke Lambda or write to DynamoDB or S3.
+
+For the CD workflow, I added my `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` here:
+```
+GitHub repo > Settings > Secrets and variables > Actions > New repository secret.
+```
+
+The name must match exactly, so `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are Case sensitive.
+
+Reference:
+https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/deploying-using-github.html

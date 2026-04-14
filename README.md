@@ -1,5 +1,8 @@
 # Smartsheet Webhook Pipeline
 
+![CI](https://github.com/ting11222001/Smartsheet-Pipeline/actions/workflows/ci.yml/badge.svg)
+![CD](https://github.com/ting11222001/Smartsheet-Pipeline/actions/workflows/cd.yml/badge.svg)
+
 A Python AWS pipeline that receives a Smartsheet-style webhook, processes the row data, and stores it in DynamoDB. When a row status is "Complete", it exports a CSV summary to S3.
 
 [Watch the Demo Video](https://www.youtube.com/watch?v=oYZsltt8m-Y) · [Architecture](#architecture)
@@ -96,11 +99,11 @@ DynamoDB  S3
 - Lambda validates and processes fake Smartsheet row data
 - DynamoDB table defined in SAM template, written to via boto3
 - S3 export triggered when `status == "Complete"`
+- CI/CD with GitHub Actions
 
 
 ## In Progress
 
 - ~~Real Smartsheet webhook signature verification~~ (need a paid account)
 - Unit tests
-- CI/CD with GitHub Actions
 - Structured logging to CloudWatch
