@@ -3,9 +3,10 @@
 ![CI](https://github.com/ting11222001/Smartsheet-Pipeline/actions/workflows/ci.yml/badge.svg)
 ![CD](https://github.com/ting11222001/Smartsheet-Pipeline/actions/workflows/cd.yml/badge.svg)
 
-A Python AWS pipeline that receives a Smartsheet-style webhook, processes the row data, and stores it in DynamoDB. When a row status is "Complete", it exports a CSV summary to S3.
+A Python AWS Lambda pipeline that processes row data and stores it in DynamoDB. When a row status is "Complete", it exports a CSV summary to S3.
 
 [Watch the Demo Video](https://www.youtube.com/watch?v=oYZsltt8m-Y) · [Architecture](#architecture)
+
 
 ## Demo
 
@@ -23,20 +24,20 @@ The screenshot below shows the exported file:
 - [Highlights](#highlights)
 - [Architecture](#architecture)
 - [Getting Started](#getting-started)
+- [Local Testing](#local-testing)
 - [What's Built](#whats-built)
 - [In Progress](#in-progress)
 
 
 ## What This Does
 
-Simulates the core integration pattern used by Smartsheet solution partners.
+Demonstrates the core integration pattern used by Smartsheet solution partners.
 
-A POST request arrives with row data from a Smartsheet webhook. Lambda validates and processes the payload. The row is written to DynamoDB. If the row status is "Complete", Lambda also writes a CSV summary to S3.
+A POST request arrives with row data. Lambda validates and processes the payload. The row is written to DynamoDB. If the row status is "Complete", Lambda also exports a CSV summary to S3.
 
 - Validates incoming JSON payload
 - Writes every row to DynamoDB
 - Exports completed rows to S3 as CSV
-- Logs errors and events to CloudWatch
 
 
 ## Tech Stack
@@ -83,6 +84,7 @@ DynamoDB  S3
           (CSV export)
 ```
 
+
 ## Getting Started
 
 1. Clone the repo
@@ -92,11 +94,26 @@ DynamoDB  S3
 5. Run `sam deploy --guided` to deploy to AWS
 
 
+## Local Testing
+
+The test event, `test_event.json`, is a simplified payload, not a real Smartsheet webhook shape:
+```
+{
+  "body": "{\"row_id\": \"101\", \"status\": \"In Progress\", \"project_name\": \"Bridge Construction\"}",
+  "httpMethod": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  }
+}
+```
+For the real Smartsheet webhook payload, see the Smartsheet webhook docs.
+
+
 ## What's Built
 
 - SAM project with `template.yaml` and `lambda_function.py`
 - API Gateway POST endpoint
-- Lambda validates and processes fake Smartsheet row data
+- Lambda validates and processes incoming row data
 - DynamoDB table defined in SAM template, written to via boto3
 - S3 export triggered when `status == "Complete"`
 - CI/CD with GitHub Actions
@@ -106,4 +123,4 @@ DynamoDB  S3
 
 - ~~Real Smartsheet webhook signature verification~~ (need a paid account)
 - Unit tests
-- Structured logging to CloudWatch
+- Structured logging to CloudWatch (for logs errors and events)
