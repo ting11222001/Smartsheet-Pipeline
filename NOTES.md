@@ -285,3 +285,11 @@ Check what's in `aws configure`:
 ```
 aws configure list
 ```
+
+## Common pattern for GitHub Actions setup
+
+The common pattern is:
+```
+ci.yml for build and test, runs on every push to any branch
+cd.yml for deploy, runs only on push to main
+```
