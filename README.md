@@ -17,6 +17,7 @@ The screenshot below shows the exported file:
 
 - [What This Does](#what-this-does)
 - [Tech Stack](#tech-stack)
+- [Highlights](#highlights)
 - [Architecture](#architecture)
 - [Getting Started](#getting-started)
 - [What's Built](#whats-built)
@@ -45,11 +46,23 @@ A POST request arrives with row data from a Smartsheet webhook. Lambda validates
 - AWS SAM (deployment)
 
 
+## Highlights
+
+**AWS CLI**
+Used the AWS CLI to configure credentials and interact with AWS services from the terminal, without needing the AWS console.
+
+**AWS SAM (Serverless Application Model)**
+SAM sits on top of CloudFormation and provides shorter, simpler syntax for defining serverless resources like Lambda functions, API Gateway, and DynamoDB tables. This reduces the amount of YAML needed and makes deployments faster to set up and repeat.
+
+**DynamoDB on-demand billing**
+Set `BillingMode: PAY_PER_REQUEST` on the DynamoDB table. This means you are only charged per read or write operation, with no minimum cost. It is a better fit for low-traffic or experimental projects where usage is unpredictable.
+
+
 ## Architecture
 
 ```
 POST request API Endpoint 
-e.g. `https://abc123.execute-api.ap-southeast-2.amazonaws.com/prod/webhook`
+e.g. `https://<id>.execute-api.<region>.amazonaws.com/prod/webhook`
       |
       ▼
 API Gateway
@@ -82,7 +95,7 @@ DynamoDB  S3
 
 ## In Progress
 
-- Real Smartsheet webhook signature verification
+- ~~Real Smartsheet webhook signature verification~~ (need a paid account)
 - Unit tests
 - CI/CD with GitHub Actions
 - Structured logging to CloudWatch
