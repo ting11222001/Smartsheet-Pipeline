@@ -251,8 +251,37 @@ Notes: make sure the console is set to the same region as deployed by SAM e.g. `
 
 Search S3 in the top search bar
 
-See a bucket called `smartsheet-summaries-104936178352`
+See a bucket called `smartsheet-summaries-<my account id>`
 
 Click it
 
 Click the summaries/ folder after you send the Complete request
+
+
+## Testing the script locally after the code included interactions with DynamoDB and S3
+
+The code reads os.environ["DYNAMODB_TABLE"], but sam local invoke does not automatically load environment variables from template.yaml.
+
+So table_name is probably an empty string or throwing a KeyError before even reaching put_item.
+
+Fix: pass the environment variables when running locally:
+```
+sam local invoke SmartsheetFunction --event test_event.json --env-vars env.json
+```
+
+Create `env.json` in the project folder:
+``
+json{
+  "SmartsheetFunction": {
+    "DYNAMODB_TABLE": "<name of the table>",
+    "S3_BUCKET": "<name of the bucket>"
+  }
+}
+```
+
+I didn't have to set the region in the `lambda_function.py` or `env.json` as I've set region in my `aws configure`.
+
+Check what's in `aws configure`:
+```
+aws configure list
+```
