@@ -74,14 +74,16 @@ POST request API Endpoint
 e.g. `https://<id>.execute-api.<region>.amazonaws.com/prod/webhook`
       |
       ▼
-API Gateway
+ API Gateway
       |
       ▼
    Lambda
-   /    \
-  ▼      ▼ (if status = "Complete")
-DynamoDB  S3
-          (CSV export)
+      |
+      ▼
+  DynamoDB
+      |  (if status = "Complete")
+      ▼
+     S3   (CSV export)
 ```
 
 
