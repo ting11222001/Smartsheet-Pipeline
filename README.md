@@ -3,14 +3,14 @@
 ![CI](https://github.com/ting11222001/Smartsheet-Pipeline/actions/workflows/ci.yml/badge.svg)
 ![CD](https://github.com/ting11222001/Smartsheet-Pipeline/actions/workflows/cd.yml/badge.svg)
 
-A Python AWS Lambda pipeline that processes row data and stores it in DynamoDB. When a row status is "Complete", it exports a CSV summary to S3.
+A Python AWS Lambda pipeline that processes row data and stores them in DynamoDB. When a row status is "Complete", it exports into a CSV to S3.
 
 [Watch the Demo Video](https://www.youtube.com/watch?v=oYZsltt8m-Y) · [Architecture](#architecture)
 
 
 ## Demo
 
-The video shows the webhook being triggered and the row written to DynamoDB. When the row status is "Complete", Lambda also exports a CSV to S3. 
+The video shows the webhook being triggered and the row written to DynamoDB. When the row status is "Complete", Lambda also exports it into a CSV to S3. 
 
 The screenshot below shows the exported file:
 
@@ -52,20 +52,20 @@ A POST request arrives with row data. Lambda validates and processes the payload
 
 ## Highlights
 
+Data architecture decision:
+- I matched the setup to the job description. DynamoDB holds live operational data. S3 holds reporting data in a format a non-technical person can open. From what I have learned, that is a common pattern in data pipelines.
+
+
 AWS CLI:
-```
-Used the AWS CLI to configure credentials and interact with AWS services from the terminal, without needing the AWS console.
-```
+- Configured credentials and ran AWS commands from the terminal, without using the AWS console.
+
 
 AWS SAM (Serverless Application Model):
-```
-SAM sits on top of CloudFormation and provides shorter, simpler syntax for defining serverless resources like Lambda functions, API Gateway, and DynamoDB tables. This reduces the amount of YAML needed and makes deployments faster to set up and repeat.
-```
+- SAM is a layer on top of CloudFormation with shorter syntax for serverless resources like Lambda, API Gateway, and DynamoDB. Less YAML, faster to set up and repeat deployments.
+
 
 DynamoDB on-demand billing:
-```
-Set `BillingMode: PAY_PER_REQUEST` on the DynamoDB table. This means you are only charged per read or write operation, with no minimum cost. It is a better fit for low-traffic or experimental projects where usage is unpredictable.
-```
+- Set `BillingMode: PAY_PER_REQUEST` on the DynamoDB table. I pay per read or write, with no minimum cost. Good for low-traffic or experimental projects where usage is hard to predict.
 
 ## Architecture
 
@@ -123,6 +123,6 @@ For the real Smartsheet webhook payload, see the Smartsheet webhook docs.
 
 ## In Progress
 
-- ~~Real Smartsheet webhook signature verification~~ (need a paid account)
+- Real Smartsheet webhook signature verification (skipped, requires paid Smartsheet account)
 - Unit tests
 - Structured logging to CloudWatch (for logs errors and events)
