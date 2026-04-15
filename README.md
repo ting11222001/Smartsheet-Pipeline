@@ -118,7 +118,7 @@ For the real Smartsheet webhook payload, see the Smartsheet webhook docs.
 - Lambda validates and processes incoming row data
 - DynamoDB table defined in SAM template, written to via boto3
 - S3 export triggered when `status == "Complete"`
-- CI/CD with GitHub Actions
+- CI/CD with GitHub Actions (CI runs `sam build` on every push. CD deploys to AWS on merge to main)
 
 
 ## In Progress
